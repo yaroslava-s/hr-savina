@@ -1,0 +1,76 @@
+  const sn=Math.max((s-opv-vosms)*c.sn-so,0);
+  const oosms=Math.min(s*c.oosms,10*c.mzp*c.oosms);
+  const hour=net/c.hours;
+  const shift=hour*c.shiftHours;
+  const employerCharges=so+opvr+sn+oosms;
+  const employerCost=s+employerCharges;
+  return {opv,vosms,ipn,net,so,opvr,sn,oosms,hour,shift,employerCharges,employerCost};
+}
+function pickCase(excludeCurrent=false){
+  let pool=cases;
+  if(excludeCurrent&&state.case) pool=cases.filter(x=>x!==state.case);
+  state.case=pool[Math.floor(Math.random()*pool.length)];
+  state.answers={};state.attempted={};state.correct={};state.stage=1;
+  renderCase(); resetQuestions(); setStage(1); updateScore();
+}
+function renderCase(){
+  $('#roleName').textContent=state.case.role;$('#roleRu').textContent=state.case.ru;$('#salaryText').textContent=money(state.case.salary);
+}
+function resetQuestions(){
+  $$('.answer').forEach(i=>i.value='');
+  $$('.feedback').forEach(f=>{f.className='feedback';f.textContent=''});
+  $$('.question').forEach(q=>q.dataset.status='');
+}
+function setStage(n){
+  state.stage=n;$$('.stage').forEach(s=>s.classList.toggle('active',Number(s.dataset.stage)===n));
+  $('#progressLabel').textContent=`Stage ${n} of 5`;$('#progressBar').style.width=((n-1)/4*100)+'%';
+  if(n===5) renderResult();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function updateMode(){
+  $('#layout').classList.toggle('guided',state.guided);
+  $('#guidedBtn').classList.toggle('active',state.guided);$('#examBtn').classList.toggle('active',!state.guided);
+  $('#modeLabel').textContent=state.guided?'Guided mode':'Assessment mode';
+}
+function expected(key){return calc(state.case.salary)[key]}
+function checkQuestion(q){
+  const key=q.dataset.key,input=q.querySelector('.answer'),fb=q.querySelector('.feedback');
+  const value=parseNum(input.value);state.attempted[key]=true;
+  if(!Number.isFinite(value)){fb.className='feedback bad';fb.textContent='Enter a numeric value.';return}
+  state.answers[key]=value;const exp=expected(key);const ok=Math.abs(value-exp)<=1;
+  state.correct[key]=ok;q.dataset.status=ok?'correct':'wrong';
+  if(ok){fb.className='feedback good';fb.textContent='Correct. '+money(exp)}
+  else{fb.className='feedback bad';fb.textContent=state.guided?`Not quite. Correct value: ${money(exp)}. Check the formula and the applicable calculation caps.`:'The answer does not match. Check your calculation.'}
+  updateScore();
+}
+function score(){return Object.entries(weights).reduce((sum,[k,w])=>sum+(state.correct[k]?w:0),0)}
+function updateScore(){const s=score();$('#scoreTop').textContent=`${s} / 100`;}
+function stageKeys(n){return n===1?['opv','vosms','ipn']:n===2?['net']:n===3?['so','opvr','sn','oosms']:n===4?['hour','shift']:[]}
+function canAdvance(n){const keys=stageKeys(n);return keys.every(k=>state.attempted[k]);}
+function flashMissing(n){stageKeys(n).filter(k=>!state.attempted[k]).forEach(k=>{const q=$(`.question[data-key="${k}"]`);const fb=q.querySelector('.feedback');fb.className='feedback bad';fb.textContent='Check this answer first.'});}
+function renderResult(){
+  const r=calc(state.case.salary);const deductions=r.opv+r.vosms+r.ipn;
+  $('#mSalary').textContent=money(state.case.salary);$('#mNet').textContent=money(r.net);$('#mEmployeeDeductions').textContent=money(deductions);
+  $('#mEmployerCharges').textContent=money(r.employerCharges);$('#mEmployerCost').textContent=money(r.employerCost);$('#mShift').textContent=money(r.shift);
+  const rows=[['OPV',r.opv],['VOSMS',r.vosms],['IIT',r.ipn],['SC',r.so],['OPVR',r.opvr],['Social Tax',r.sn],['OOSMS',r.oosms],['Net pay per hour',r.hour],['11-hour shift',r.shift]];
+  $('#breakdown').innerHTML=rows.map(([l,v])=>`<div class="row"><span>${l}</span><b>${money(v)}</b></div>`).join('');
+  const s=score();$('#bigScore').textContent=`${s}/100`;
+  $('#resultText').textContent=s===100?'Calculation completed with no errors.':s>=80?'Good result — review 1–2 steps.':s>=60?'The overall logic is there, but some calculations need to be redone.':'Return to the stages and rebuild the calculation chain.';
+}
+function copyResult(){
+  const r=calc(state.case.salary);const text=`Payroll case — ${state.case.role} (${state.case.ru})\nGross salary: ${money(state.case.salary)}\nOPV: ${money(r.opv)}\nVOSMS: ${money(r.vosms)}\nIIT: ${money(r.ipn)}\nNet pay: ${money(r.net)}\nSC: ${money(r.so)}\nOPVR: ${money(r.opvr)}\nST: ${money(r.sn)}\nOOSMS: ${money(r.oosms)}\nTotal employer cost: ${money(r.employerCost)}\nNet pay per hour: ${money(r.hour)}\n11-hour shift: ${money(r.shift)}\nScore: ${score()}/100`;
+  navigator.clipboard?.writeText(text).then(()=>showToast('Result copied')).catch(()=>showToast('Could not copy'));
+}
+function showToast(t){const el=$('#toast');el.textContent=t;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),1800)}
+$('#startBtn').addEventListener('click',()=>{$('#intro').classList.add('hidden');$('#lab').classList.remove('hidden');pickCase();updateMode()});
+$('#newCaseBtn').addEventListener('click',()=>pickCase(true));$('#restartBtn').addEventListener('click',()=>pickCase(true));
+$('#guidedBtn').addEventListener('click',()=>{state.guided=true;updateMode()});$('#examBtn').addEventListener('click',()=>{state.guided=false;updateMode()});
+$$('.check').forEach(b=>b.addEventListener('click',()=>checkQuestion(b.closest('.question'))));
+$$('.answer').forEach(i=>i.addEventListener('keydown',e=>{if(e.key==='Enter')checkQuestion(i.closest('.question'))}));
+$$('.next').forEach(b=>b.addEventListener('click',()=>{const cur=Number(b.dataset.next)-1;if(canAdvance(cur))setStage(Number(b.dataset.next));else flashMissing(cur)}));
+$$('.back').forEach(b=>b.addEventListener('click',()=>setStage(Number(b.dataset.back))));
+$('#finishBtn').addEventListener('click',()=>{if(canAdvance(4))setStage(5);else flashMissing(4)});$('#copyBtn').addEventListener('click',copyResult);
+updateMode();
+</script>
+</body>
+</html>
