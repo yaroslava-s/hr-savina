@@ -1,0 +1,100 @@
+<div class="app">
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">MNU HR LAB · PAYROLL</div>
+      <div class="top-actions">
+        <span class="pill hide-mobile">RATES FROM THE TRAINING EXCEL FILE</span>
+        <span class="pill score-pill" id="scoreTop">0 / 100</span>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <section id="intro">
+      <div class="hero">
+        <div class="hero-main">
+          <div class="eyebrow">COMPENSATION & PERFORMANCE MANAGEMENT · 15–20 MINUTES</div>
+          <h1>Calculate payroll.<br>Not by calculator — by logic.</h1>
+          <p class="lead">An interactive payroll calculation trainer for Kazakhstan: employee deductions, employer contributions, net pay, and the cost of working time.</p>
+        </div>
+        <div class="hero-side">
+          <div>
+            <div class="outcome-label">TRAINER OUTCOME</div>
+            <div class="outcome">One fully calculated payroll case + a score of up to 100 points.</div>
+          </div>
+          <div class="steps-mini">
+            <div><span class="num">1</span> Employee deductions</div>
+            <div><span class="num">2</span> Net pay</div>
+            <div><span class="num">3</span> Employer contributions</div>
+            <div><span class="num">4</span> Hourly rate and 11-hour shift</div>
+            <div><span class="num">5</span> Final payroll statement</div>
+          </div>
+          <button class="primary" id="startBtn">Start the trainer →</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="lab" class="lab hidden">
+      <div class="progress-wrap">
+        <div class="progress-meta"><span id="progressLabel">Stage 1 of 5</span><span id="modeLabel">Guided mode</span></div>
+        <div class="progress"><div id="progressBar"></div></div>
+      </div>
+
+      <div class="layout" id="layout">
+        <aside class="sidebar">
+          <div class="card case-card">
+            <div class="outcome-label">YOUR CASE</div>
+            <div class="case-role" id="roleName">—</div>
+            <div class="case-sub" id="roleRu">—</div>
+            <div class="salary" id="salaryText">— ₸</div>
+            <div class="small" style="margin-top:14px">Gross salary before deductions. Calculate to 2 decimal places; answers within ±1 ₸ are accepted.</div>
+            <button class="ghost" id="newCaseBtn" style="margin-top:16px;width:100%;background:white">↻ New case</button>
+          </div>
+
+          <div class="card">
+            <div class="q-head" style="margin:0"><b>Mode</b></div>
+            <div class="mode-tabs" style="margin-top:10px">
+              <button class="active" id="guidedBtn">Show formulas</button>
+              <button id="examBtn">No hints</button>
+            </div>
+            <div class="small" style="margin-top:11px">You can switch modes at any time. Your answers and score will be preserved.</div>
+          </div>
+
+          <div class="card">
+            <b>Base parameters</b>
+            <div class="rates">
+              <div class="rate"><b>Minimum Wage</b><span>85 000 ₸</span></div>
+              <div class="rate"><b>MCI</b><span>3 932 ₸</span></div>
+              <div class="rate"><b>14 MCI</b><span>55 048 ₸</span></div>
+              <div class="rate"><b>IIT</b><span>10%</span></div>
+              <div class="rate"><b>OPV</b><span>10%</span></div>
+              <div class="rate"><b>VOSMS</b><span>2%</span></div>
+              <div class="rate"><b>SC</b><span>5%</span></div>
+              <div class="rate"><b>OPVR</b><span>2.5%</span></div>
+              <div class="rate"><b>ST</b><span>11%</span></div>
+              <div class="rate"><b>OOSMS</b><span>3%</span></div>
+            </div>
+            <div class="note">This trainer follows the rates and calculation logic from the attached Excel file. For real payroll calculations, statutory parameters must be updated for the relevant period.</div>
+          </div>
+        </aside>
+
+        <div class="card" id="trainerCard">
+          <div class="stage active" data-stage="1">
+            <div class="stage-title"><div class="stage-index">01</div><div><h2>Employee deductions</h2><div class="stage-desc">First, calculate the amounts withheld from the employee’s gross salary.</div></div></div>
+            <div class="question" data-key="opv">
+              <div class="q-head"><div class="q-title">1. Mandatory Pension Contributions (OPV)</div><span class="small">10 points</span></div>
+              <div class="formula">OPV = min(Gross salary × 10%; 50 × Minimum Wage × 10%)</div>
+              <div class="input-row"><input class="answer" inputmode="decimal" placeholder="Enter amount, ₸"><button class="check">Check</button></div><div class="feedback"></div>
+            </div>
+            <div class="question" data-key="vosms">
+              <div class="q-head"><div class="q-title">2. Employee Compulsory Health Insurance Contributions (VOSMS)</div><span class="small">10 points</span></div>
+              <div class="formula">VOSMS = min(Gross salary × 2%; 10 × Minimum Wage × 2%)</div>
+              <div class="input-row"><input class="answer" inputmode="decimal" placeholder="Enter amount, ₸"><button class="check">Check</button></div><div class="feedback"></div>
+            </div>
+            <div class="question" data-key="ipn">
+              <div class="q-head"><div class="q-title">3. Individual Income Tax (IIT)</div><span class="small">10 points</span></div>
+              <div class="formula">IIT = max((Gross salary − OPV − 14 MCI − VOSMS) × 10%; 0)</div>
+              <div class="input-row"><input class="answer" inputmode="decimal" placeholder="Enter amount, ₸"><button class="check">Check</button></div><div class="feedback"></div>
+            </div>
+            <div class="actions"><span class="small">Check all three answers before moving on.</span><button class="primary next" data-next="2">Next stage →</button></div>
+          </div>
