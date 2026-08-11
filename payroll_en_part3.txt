@@ -1,0 +1,100 @@
+
+          <div class="stage" data-stage="2">
+            <div class="stage-title"><div class="stage-index">02</div><div><h2>Net pay</h2><div class="stage-desc">Combine the employee deductions into the final net amount.</div></div></div>
+            <div class="question" data-key="net">
+              <div class="q-head"><div class="q-title">4. How much will the employee receive as net pay?</div><span class="small">15 points</span></div>
+              <div class="formula">Net pay = Gross salary − OPV − IIT − VOSMS</div>
+              <div class="input-row"><input class="answer" inputmode="decimal" placeholder="Enter amount, ₸"><button class="check">Check</button></div><div class="feedback"></div>
+            </div>
+            <div class="actions"><button class="secondary back" data-back="1">← Back</button><button class="primary next" data-next="3">Employer contributions →</button></div>
+          </div>
+
+          <div class="stage" data-stage="3">
+            <div class="stage-title"><div class="stage-index">03</div><div><h2>Employer contributions</h2><div class="stage-desc">Now calculate the amounts the employer pays on top of the gross salary.</div></div></div>
+            <div class="question" data-key="so">
+              <div class="q-head"><div class="q-title">5. Social Contributions (SC)</div><span class="small">10 points</span></div>
+              <div class="formula">SC = min((Gross salary − OPV) × 5%; 7 × Minimum Wage × 5%)</div>
+              <div class="input-row"><input class="answer" inputmode="decimal" placeholder="Enter amount, ₸"><button class="check">Check</button></div><div class="feedback"></div>
+            </div>
+            <div class="question" data-key="opvr">
+              <div class="q-head"><div class="q-title">6. Employer Mandatory Pension Contributions (OPVR)</div><span class="small">10 points</span></div>
+              <div class="formula">OPVR = min(Gross salary × 2.5%; 50 × Minimum Wage × 2.5%)</div>
+              <div class="input-row"><input class="answer" inputmode="decimal" placeholder="Enter amount, ₸"><button class="check">Check</button></div><div class="feedback"></div>
+            </div>
+            <div class="question" data-key="sn">
+              <div class="q-head"><div class="q-title">7. Social Tax (ST)</div><span class="small">10 points</span></div>
+              <div class="formula">ST = max((Gross salary − OPV − VOSMS) × 11% − SC; 0)</div>
+              <div class="input-row"><input class="answer" inputmode="decimal" placeholder="Enter amount, ₸"><button class="check">Check</button></div><div class="feedback"></div>
+            </div>
+            <div class="question" data-key="oosms">
+              <div class="q-head"><div class="q-title">8. Employer Compulsory Health Insurance Contributions (OOSMS)</div><span class="small">10 points</span></div>
+              <div class="formula">OOSMS = min(Gross salary × 3%; 10 × Minimum Wage × 3%)</div>
+              <div class="input-row"><input class="answer" inputmode="decimal" placeholder="Enter amount, ₸"><button class="check">Check</button></div><div class="feedback"></div>
+            </div>
+            <div class="actions"><button class="secondary back" data-back="2">← Back</button><button class="primary next" data-next="4">Cost of working time →</button></div>
+          </div>
+
+          <div class="stage" data-stage="4">
+            <div class="stage-title"><div class="stage-index">04</div><div><h2>Hour and shift</h2><div class="stage-desc">Use the logic from the file: 164 working hours in the calculation month and an 11-hour shift.</div></div></div>
+            <div class="question" data-key="hour">
+              <div class="q-head"><div class="q-title">9. Net pay per hour</div><span class="small">7.5 points</span></div>
+              <div class="formula">1 hour = Net pay ÷ 164</div>
+              <div class="input-row"><input class="answer" inputmode="decimal" placeholder="Enter amount, ₸"><button class="check">Check</button></div><div class="feedback"></div>
+            </div>
+            <div class="question" data-key="shift">
+              <div class="q-head"><div class="q-title">10. Net pay for an 11-hour shift</div><span class="small">7.5 points</span></div>
+              <div class="formula">11 hours = Hourly net pay × 11</div>
+              <div class="input-row"><input class="answer" inputmode="decimal" placeholder="Enter amount, ₸"><button class="check">Check</button></div><div class="feedback"></div>
+            </div>
+            <div class="actions"><button class="secondary back" data-back="3">← Back</button><button class="primary" id="finishBtn">Build payroll statement →</button></div>
+          </div>
+
+          <div class="stage" data-stage="5">
+            <div class="stage-title"><div class="stage-index">05</div><div><h2>Payroll statement</h2><div class="stage-desc">Review the complete payroll picture for both the employee and the employer.</div></div></div>
+            <div class="result-grid">
+              <div class="metric emphasis"><span>Gross salary</span><b id="mSalary">—</b></div>
+              <div class="metric emphasis"><span>Net pay</span><b id="mNet">—</b></div>
+              <div class="metric"><span>Employee deductions</span><b id="mEmployeeDeductions">—</b></div>
+              <div class="metric"><span>Employer contributions</span><b id="mEmployerCharges">—</b></div>
+              <div class="metric"><span>Total employer cost</span><b id="mEmployerCost">—</b></div>
+              <div class="metric"><span>11-hour shift</span><b id="mShift">—</b></div>
+            </div>
+            <div class="breakdown" id="breakdown"></div>
+            <div class="certificate">
+              <div><div class="outcome-label" style="color:var(--muted)">RESULT</div><div style="font-weight:850;font-size:20px" id="resultText">—</div></div>
+              <div class="bigscore" id="bigScore">0/100</div>
+            </div>
+            <div class="actions"><button class="secondary back" data-back="4">← Return to calculations</button><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="ghost" id="copyBtn">Copy result</button><button class="primary" id="restartBtn">New case →</button></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+<div class="toast" id="toast">Copied</div>
+<script>
+const CONFIG={mzp:85000,mrp:3932,ipn:0.10,opv:0.10,opvr:0.025,so:0.05,sn:0.11,oosms:0.03,vosms:0.02,hours:164,shiftHours:11};
+const cases=[
+  {role:'Motorman',ru:'Motorman',salary:514693.10},
+  {role:'Driller',ru:'Driller',salary:1198927.00},
+  {role:'Assistant Driller',ru:'Assistant Driller',salary:772257.24},
+  {role:'Welder',ru:'Welder',salary:713394.82},
+  {role:'ABE',ru:'Assistant Barge Engineer',salary:514693.10},
+  {role:'Roughneck',ru:'Roughneck',salary:514693.10},
+  {role:'Derrickman',ru:'Derrickman',salary:690903.9404318688},
+  {role:'Mechanic',ru:'Mechanic',salary:626624.0610573343},
+  {role:'QHSE Supervisor',ru:'QHSE Supervisor',salary:866022.41}
+];
+const weights={opv:10,vosms:10,ipn:10,net:15,so:10,opvr:10,sn:10,oosms:10,hour:7.5,shift:7.5};
+let state={case:null,answers:{},attempted:{},correct:{},stage:1,guided:true};
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const money=n=>new Intl.NumberFormat('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}).format(n)+' ₸';
+const parseNum=v=>Number(String(v).replace(/\s/g,'').replace(/₸/g,'').replace(',','.'));
+function calc(s){
+  const c=CONFIG;
+  const opv=Math.min(s*c.opv,50*c.mzp*c.opv);
+  const vosms=Math.min(s*c.vosms,10*c.mzp*c.vosms);
+  const ipn=Math.max((s-opv-14*c.mrp-vosms)*c.ipn,0);
+  const net=s-opv-ipn-vosms;
+  const so=Math.min((s-opv)*c.so,7*c.mzp*c.so);
+  const opvr=Math.min(s*c.opvr,50*c.mzp*c.opvr);
