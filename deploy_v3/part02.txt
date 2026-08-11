@@ -1,0 +1,96 @@
+ var(--line);border-radius:20px;padding:18px}
+.enduring-card .num{font-size:.72rem;font-weight:900;letter-spacing:.08em;color:var(--accent2);text-transform:uppercase;margin-bottom:8px}
+.enduring-card h4{font-size:1.05rem;margin:0 0 8px}
+.enduring-card p{margin:0;color:var(--muted);font-size:.92rem}
+.evolving-side{background:linear-gradient(145deg,#211416,#171a24);border:1px solid #4c2b2d;border-radius:28px;padding:26px;position:sticky;top:86px}
+.evolving-side h3{font-size:1.55rem;margin:0 0 10px}
+.evolving-side p{color:var(--muted);margin:0 0 16px}
+.evolving-list{display:grid;gap:10px}
+.evolving-item{border:1px solid #4c2b2d;border-radius:15px;padding:12px 13px;background:rgba(255,255,255,.02)}
+.evolving-label{display:inline-block;padding:5px 8px;border-radius:999px;background:rgba(239,106,91,.12);color:var(--accent2);font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;font-weight:900;margin-bottom:7px}
+.foundation-note{margin-top:18px;padding:16px 18px;border-radius:18px;background:#10141d;border:1px solid var(--line);font-size:.94rem;color:var(--muted)}
+.foundation-note b{color:var(--text)}
+@media(max-width:900px){
+  .enduring-wrap,.enduring-grid{grid-template-columns:1fr}
+  .evolving-side{position:static}
+}
+
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="container inner">
+    <div class="brand">HRM · Interactive Syllabus</div>
+    <nav class="nav">
+      <a href="#hrm-map">XMind map</a>
+      <a href="#outcomes">Outcomes</a>
+      <a href="#enduring">Enduring vs. Evolving</a>
+      <a href="#grading">Grading</a>
+      <a href="#ai">AI rules</a>
+      <a href="#schedule">15 weeks</a>
+      <a href="#project">Big project</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="container">
+    <div class="kicker"><span>MGT 3305</span> · 5 ECTS · HUMAN RESOURCES MANAGEMENT</div>
+    <h1>People.<br>Systems.<br>Strategy.</h1>
+    <p class="hero-sub">An interactive course map for understanding how HR decisions connect recruitment, development, performance and reward to organizational goals.</p>
+    <div class="hero-grid">
+      <div class="hero-card">
+        <div class="eyebrow">Course result</div>
+        <strong>Not just “learn HR”. Build an HR logic.</strong>
+        <p class="small">By the end of the course, students move from isolated HR tools to a connected view of how people-management practices support company strategy.</p>
+        <br>
+        <button class="cta" onclick="document.querySelector('#schedule').scrollIntoView({behavior:'smooth'})">Start the course map →</button>
+      </div>
+      <div class="hero-card">
+        <div class="eyebrow">Course facts</div>
+        <div class="meta">
+          <div><b>Lecturer</b>Yaroslava Savina, SPHRi, MSc</div>
+          <div><b>Format</b>30 contact sessions</div>
+          <div><b>Meetings</b>2 × 75 min / week</div>
+          <div><b>Office hours</b>By appointment</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section" id="hrm-map">
+  <div class="container">
+    <div class="section-head">
+      <div><div class="eyebrow">02 · How HR fits together</div><h2>Your original XMind map</h2></div>
+      <p class="section-note">This is the actual visual map from the uploaded HRM.xmind file. Below it, you can switch to an interactive web version of the same structure.</p>
+    </div>
+
+    <div class="map-shell">
+      <div class="map-toolbar">
+        <div class="map-tabs">
+          <button class="map-tab" data-map-view="interactive">Interactive view</button>
+          <button class="map-tab active" data-map-view="original">Original XMind preview</button>
+        </div>
+      </div>
+
+      <div id="interactiveMap" style="display:none">
+        <div class="map-canvas" id="mapCanvas">
+          <svg class="map-lines" id="mapLines"></svg>
+          <div class="map-center">HRM</div>
+          <div id="mapBranches"></div>
+        </div>
+        <div class="map-detail" id="mapDetail">
+          <div class="map-detail-head">
+            <div>
+              <div class="eyebrow">Explore the map</div>
+              <h3>Select a branch</h3>
+            </div>
+            <div class="map-hint">The structure below is taken directly from HRM.xmind.</div>
+          </div>
+          <p class="small">Choose one of the HRM branches above to see its subtopics and nested concepts.</p>
+        </div>
+      </div>
+
+      <div class="original-map" id="originalMap" style="display:block">
+        <img src="data:image/webp;base64,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
